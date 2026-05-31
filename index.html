@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XXX 的个人专辑</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff7fb;
+      --ink: #2d1d25;
+      --muted: #755866;
+      --accent: #d93b78;
+      --accent-strong: #b92562;
+      --line: rgba(217, 59, 120, 0.22);
+      --surface: rgba(255, 255, 255, 0.78);
+      --shadow: 0 22px 60px rgba(148, 47, 92, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 211, 226, 0.9), transparent 32%),
+        radial-gradient(circle at 80% 10%, rgba(255, 237, 196, 0.95), transparent 28%),
+        linear-gradient(145deg, #fff7fb 0%, #fffdf8 55%, #ffeef6 100%);
+    }
+
+    main {
+      width: min(560px, 100%);
+      padding: clamp(28px, 6vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 32px;
+      font-size: clamp(28px, 7vw, 44px);
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: var(--accent-strong);
+    }
+
+    .tracks {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    button {
+      width: 100%;
+      min-height: 58px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      font: inherit;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.86);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+    }
+
+    button:hover,
+    button:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(217, 59, 120, 0.54);
+      box-shadow: 0 12px 26px rgba(169, 54, 103, 0.15);
+      outline: none;
+    }
+
+    button[aria-pressed="true"] {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), #f06b91);
+      box-shadow: 0 16px 34px rgba(217, 59, 120, 0.28);
+    }
+
+    .track-state {
+      flex: 0 0 auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--accent);
+      background: rgba(217, 59, 120, 0.11);
+      font-size: 15px;
+    }
+
+    button[aria-pressed="true"] .track-state {
+      color: var(--accent-strong);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 26px;
+    }
+
+    .now-playing {
+      min-height: 24px;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>❤ XXX 的个人专辑 ❤</h1>
+
+    <ul class="tracks" aria-label="歌曲列表">
+      <li>
+        <button type="button" data-src="trust me.mp3" data-title="Track 1" aria-pressed="false">
+          <span>Track 1</span>
+          <span class="track-state" aria-hidden="true">▶</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" data-src="怎样.mp3" data-title="Track 2" aria-pressed="false">
+          <span>Track 2</span>
+          <span class="track-state" aria-hidden="true">▶</span>
+        </button>
+      </li>
+      <li>
+        <button type="button" data-src="难过233秒.mp3" data-title="Track 3" aria-pressed="false">
+          <span>Track 3</span>
+          <span class="track-state" aria-hidden="true">▶</span>
+        </button>
+      </li>
+    </ul>
+
+    <audio controls preload="metadata"></audio>
+    <p class="now-playing" aria-live="polite">点击一首歌开始播放</p>
+  </main>
+
+  <script>
+    const audio = document.querySelector("audio");
+    const statusText = document.querySelector(".now-playing");
+    const trackButtons = Array.from(document.querySelectorAll("[data-src]"));
+
+    function setActiveTrack(activeButton) {
+      trackButtons.forEach((button) => {
+        const isActive = button === activeButton;
+        button.setAttribute("aria-pressed", String(isActive));
+        button.querySelector(".track-state").textContent = isActive ? "❚❚" : "▶";
+      });
+    }
+
+    trackButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
+        const shouldLoad = audio.getAttribute("src") !== button.dataset.src;
+
+        if (shouldLoad) {
+          audio.src = button.dataset.src;
+          statusText.textContent = `正在播放：${button.dataset.title}`;
+          setActiveTrack(button);
+        }
+
+        if (!audio.paused && !shouldLoad) {
+          audio.pause();
+          button.querySelector(".track-state").textContent = "▶";
+          statusText.textContent = `已暂停：${button.dataset.title}`;
+          return;
+        }
+
+        try {
+          await audio.play();
+          setActiveTrack(button);
+          statusText.textContent = `正在播放：${button.dataset.title}`;
+        } catch (error) {
+          statusText.textContent = "浏览器阻止了自动播放，请再点一次播放按钮";
+        }
+      });
+    });
+
+    audio.addEventListener("ended", () => {
+      const currentIndex = trackButtons.findIndex((button) => button.getAttribute("aria-pressed") === "true");
+      const nextButton = trackButtons[currentIndex + 1];
+
+      if (nextButton) {
+        nextButton.click();
+      } else {
+        setActiveTrack(null);
+        statusText.textContent = "播放结束";
+      }
+    });
+  </script>
+</body>
+</html>
