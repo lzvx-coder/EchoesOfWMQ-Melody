@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XXX 的个人专辑</title>
+  <title>万梦琪的个人专辑</title>
   <style>
     :root {
       color-scheme: dark;
-      --page: #111718;
-      --ink: #f6f1e8;
-      --muted: #aeb7b4;
-      --soft: #1a2223;
-      --line: rgba(246, 241, 232, 0.12);
-      --accent: #2db3a4;
-      --accent-2: #e77e5f;
-      --shadow: 0 28px 90px rgba(0, 0, 0, 0.36);
+      --page: #101516;
+      --ink: #fbf5ed;
+      --muted: #b7ada4;
+      --dim: #807871;
+      --line: rgba(251, 245, 237, 0.14);
+      --panel: rgba(251, 245, 237, 0.055);
+      --panel-strong: rgba(251, 245, 237, 0.095);
+      --accent: #e89b86;
+      --accent-2: #48b9aa;
+      --shadow: 0 34px 100px rgba(0, 0, 0, 0.42);
     }
 
     * {
@@ -24,37 +26,45 @@
     body {
       min-height: 100vh;
       margin: 0;
-      padding: 32px;
+      padding: 34px;
       display: grid;
       place-items: center;
       font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
       color: var(--ink);
       background:
-        linear-gradient(120deg, rgba(45, 179, 164, 0.13), transparent 34%),
-        linear-gradient(300deg, rgba(231, 126, 95, 0.12), transparent 28%),
+        linear-gradient(135deg, rgba(232, 155, 134, 0.16), transparent 30%),
+        linear-gradient(315deg, rgba(72, 185, 170, 0.13), transparent 34%),
+        radial-gradient(circle at 50% 10%, rgba(251, 245, 237, 0.06), transparent 36%),
         var(--page);
     }
 
     main {
-      width: min(980px, 100%);
+      width: min(1080px, 100%);
       display: grid;
-      grid-template-columns: minmax(260px, 410px) 1fr;
-      gap: clamp(24px, 5vw, 54px);
+      grid-template-columns: minmax(280px, 460px) minmax(0, 1fr);
+      gap: clamp(26px, 5vw, 64px);
       align-items: center;
+    }
+
+    .cover-column {
+      display: grid;
+      gap: 18px;
     }
 
     .cover-wrap {
       position: relative;
+      isolation: isolate;
     }
 
-    .cover-wrap::after {
+    .cover-wrap::before {
       content: "";
       position: absolute;
-      inset: 7% -5% -7% 14%;
+      inset: 9% -7% -9% 11%;
       z-index: -1;
       border-radius: 8px;
-      background: rgba(45, 179, 164, 0.22);
-      filter: blur(42px);
+      background:
+        linear-gradient(135deg, rgba(232, 155, 134, 0.32), rgba(72, 185, 170, 0.24));
+      filter: blur(46px);
     }
 
     .cover {
@@ -67,39 +77,66 @@
       box-shadow: var(--shadow);
     }
 
+    .dedication {
+      margin: 0;
+      padding-left: 2px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
     .album {
       min-width: 0;
       display: grid;
-      gap: 26px;
+      gap: 24px;
+      padding: clamp(0px, 2vw, 12px) 0;
     }
 
-    .eyebrow {
-      margin: 0;
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
       color: var(--accent);
       font-size: 13px;
       font-weight: 800;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
+    }
+
+    .heart {
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(232, 155, 134, 0.44);
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: var(--accent);
+      background: rgba(232, 155, 134, 0.08);
+      font-size: 14px;
+      letter-spacing: 0;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(42px, 8vw, 76px);
+      max-width: 7em;
+      font-size: clamp(44px, 7.4vw, 84px);
       line-height: 0.98;
       font-weight: 900;
       letter-spacing: 0;
     }
 
     .summary {
-      margin: -10px 0 0;
+      max-width: 520px;
+      margin: -8px 0 4px;
       color: var(--muted);
       font-size: 16px;
-      line-height: 1.8;
+      line-height: 1.85;
     }
 
     .tracks {
       display: grid;
-      gap: 8px;
+      gap: 10px;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -107,38 +144,38 @@
 
     button {
       width: 100%;
-      min-height: 68px;
-      border: 1px solid transparent;
-      border-bottom-color: var(--line);
+      min-height: 70px;
+      border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 0 14px;
+      padding: 0 16px;
       display: grid;
-      grid-template-columns: 36px 1fr 40px;
+      grid-template-columns: 38px 1fr 40px;
       align-items: center;
       gap: 16px;
       font: inherit;
       text-align: left;
       color: var(--ink);
-      background: transparent;
+      background: var(--panel);
       cursor: pointer;
-      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
     }
 
     button:hover,
     button:focus-visible {
-      transform: translateX(4px);
-      border-color: rgba(45, 179, 164, 0.45);
-      background: rgba(246, 241, 232, 0.055);
+      transform: translateY(-2px);
+      border-color: rgba(232, 155, 134, 0.52);
+      background: var(--panel-strong);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18);
       outline: none;
     }
 
     button[aria-pressed="true"] {
-      border-color: rgba(45, 179, 164, 0.5);
-      background: rgba(45, 179, 164, 0.1);
+      border-color: rgba(232, 155, 134, 0.72);
+      background: rgba(232, 155, 134, 0.12);
     }
 
     .track-number {
-      color: var(--muted);
+      color: var(--dim);
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 0.08em;
@@ -162,14 +199,14 @@
       display: inline-grid;
       place-items: center;
       color: var(--ink);
-      background: rgba(246, 241, 232, 0.07);
+      background: rgba(251, 245, 237, 0.07);
       font-size: 13px;
       justify-self: end;
     }
 
     button[aria-pressed="true"] .track-state {
       border-color: transparent;
-      color: #081312;
+      color: #221311;
       background: var(--accent);
     }
 
@@ -179,13 +216,13 @@
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(246, 241, 232, 0.05);
+      background: linear-gradient(135deg, rgba(251, 245, 237, 0.085), rgba(251, 245, 237, 0.035));
     }
 
     audio {
       width: 100%;
       height: 42px;
-      filter: saturate(0.85);
+      filter: saturate(0.86);
     }
 
     .now-playing {
@@ -196,7 +233,7 @@
       line-height: 1.6;
     }
 
-    @media (max-width: 780px) {
+    @media (max-width: 820px) {
       body {
         padding: 18px;
         align-items: start;
@@ -207,14 +244,15 @@
         gap: 24px;
       }
 
-      .cover-wrap {
-        max-width: 520px;
+      .cover-column {
+        max-width: 560px;
         width: 100%;
         margin: 0 auto;
       }
 
       h1 {
-        font-size: clamp(38px, 13vw, 60px);
+        max-width: none;
+        font-size: clamp(38px, 12vw, 62px);
       }
 
       button {
@@ -225,14 +263,21 @@
 </head>
 <body>
   <main>
-    <div class="cover-wrap">
-      <img class="cover" src="album-cover.png" alt="XXX 的个人专辑封面">
+    <div class="cover-column">
+      <div class="cover-wrap">
+        <img class="cover" src="album-cover.png" alt="万梦琪的个人专辑封面">
+      </div>
+      <p class="dedication">把这几首歌收藏在这里，像把一小束光留给你。</p>
     </div>
 
     <section class="album" aria-label="专辑播放器">
-      <p class="eyebrow">Personal Album</p>
-      <h1>XXX 的个人专辑</h1>
-      <p class="summary">三首歌，按顺序播放。点击歌名即可开始。</p>
+      <div class="meta-line">
+        <span class="heart" aria-hidden="true">♡</span>
+        <span>Personal Album</span>
+      </div>
+
+      <h1>万梦琪的个人专辑</h1>
+      <p class="summary">为万梦琪单独留出的三首歌。点击歌名播放，听见她的声音，也听见一点认真喜欢。</p>
 
       <ul class="tracks" aria-label="歌曲列表">
         <li>
