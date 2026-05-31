@@ -7,14 +7,15 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #fff7fb;
-      --ink: #2d1d25;
-      --muted: #755866;
-      --accent: #d93b78;
-      --accent-strong: #b92562;
-      --line: rgba(217, 59, 120, 0.22);
-      --surface: rgba(255, 255, 255, 0.78);
-      --shadow: 0 22px 60px rgba(148, 47, 92, 0.18);
+      --bg: #f4f1eb;
+      --ink: #1f2428;
+      --muted: #6c737a;
+      --line: #d8d1c6;
+      --panel: #fffdfa;
+      --panel-soft: #f8f5ef;
+      --accent: #1f7a72;
+      --accent-dark: #145852;
+      --shadow: 0 24px 70px rgba(31, 36, 40, 0.12);
     }
 
     * {
@@ -24,40 +25,92 @@
     body {
       min-height: 100vh;
       margin: 0;
+      padding: 28px;
       display: grid;
       place-items: center;
-      padding: 28px;
       font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 20% 20%, rgba(255, 211, 226, 0.9), transparent 32%),
-        radial-gradient(circle at 80% 10%, rgba(255, 237, 196, 0.95), transparent 28%),
-        linear-gradient(145deg, #fff7fb 0%, #fffdf8 55%, #ffeef6 100%);
+        linear-gradient(90deg, rgba(31, 36, 40, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(31, 36, 40, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 36px 36px;
     }
 
     main {
-      width: min(560px, 100%);
-      padding: clamp(28px, 6vw, 52px);
+      width: min(760px, 100%);
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: var(--panel);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-      text-align: center;
+    }
+
+    .cover {
+      min-height: 420px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        linear-gradient(145deg, rgba(31, 122, 114, 0.95), rgba(31, 36, 40, 0.96)),
+        linear-gradient(45deg, transparent 35%, rgba(255, 255, 255, 0.14) 35% 42%, transparent 42%);
+      color: #fff;
+    }
+
+    .album-mark {
+      width: 72px;
+      height: 72px;
+      border: 1px solid rgba(255, 255, 255, 0.42);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .cover-meta {
+      display: grid;
+      gap: 10px;
+    }
+
+    .label {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     h1 {
-      margin: 0 0 32px;
-      font-size: clamp(28px, 7vw, 44px);
-      line-height: 1.18;
+      margin: 0;
+      font-size: clamp(30px, 5vw, 46px);
+      line-height: 1.08;
       font-weight: 800;
       letter-spacing: 0;
-      color: var(--accent-strong);
+    }
+
+    .content {
+      padding: clamp(26px, 5vw, 42px);
+      display: grid;
+      align-content: center;
+      gap: 26px;
+    }
+
+    .section-title {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .tracks {
       display: grid;
-      gap: 14px;
+      gap: 10px;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -65,97 +118,142 @@
 
     button {
       width: 100%;
-      min-height: 58px;
+      min-height: 64px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 0 22px;
-      display: flex;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 42px 1fr 36px;
       align-items: center;
-      justify-content: space-between;
       gap: 14px;
       font: inherit;
-      font-size: 19px;
-      font-weight: 700;
-      letter-spacing: 0;
+      text-align: left;
       color: var(--ink);
-      background: rgba(255, 255, 255, 0.86);
+      background: var(--panel-soft);
       cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
     }
 
     button:hover,
     button:focus-visible {
-      transform: translateY(-2px);
-      border-color: rgba(217, 59, 120, 0.54);
-      box-shadow: 0 12px 26px rgba(169, 54, 103, 0.15);
+      transform: translateY(-1px);
+      border-color: rgba(31, 122, 114, 0.55);
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(31, 36, 40, 0.08);
       outline: none;
     }
 
     button[aria-pressed="true"] {
-      color: #fff;
-      border-color: transparent;
-      background: linear-gradient(135deg, var(--accent), #f06b91);
-      box-shadow: 0 16px 34px rgba(217, 59, 120, 0.28);
+      border-color: rgba(31, 122, 114, 0.7);
+      background: rgba(31, 122, 114, 0.08);
+    }
+
+    .track-number {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+
+    .track-title {
+      min-width: 0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0;
     }
 
     .track-state {
-      flex: 0 0 auto;
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
       display: inline-grid;
       place-items: center;
-      color: var(--accent);
-      background: rgba(217, 59, 120, 0.11);
-      font-size: 15px;
+      color: #fff;
+      background: var(--ink);
+      font-size: 13px;
+      justify-self: end;
     }
 
     button[aria-pressed="true"] .track-state {
-      color: var(--accent-strong);
-      background: rgba(255, 255, 255, 0.9);
+      background: var(--accent);
+    }
+
+    .player {
+      display: grid;
+      gap: 12px;
+      padding-top: 4px;
     }
 
     audio {
       width: 100%;
-      margin-top: 26px;
+      height: 42px;
     }
 
     .now-playing {
-      min-height: 24px;
-      margin: 20px 0 0;
+      min-height: 22px;
+      margin: 0;
       color: var(--muted);
-      font-size: 15px;
+      font-size: 14px;
       line-height: 1.6;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 16px;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .cover {
+        min-height: 230px;
+      }
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>❤ XXX 的个人专辑 ❤</h1>
+    <section class="cover" aria-label="专辑信息">
+      <div class="album-mark">A</div>
+      <div class="cover-meta">
+        <p class="label">Personal Album</p>
+        <h1>XXX 的个人专辑</h1>
+      </div>
+    </section>
 
-    <ul class="tracks" aria-label="歌曲列表">
-      <li>
-        <button type="button" data-src="trust me.mp3" data-title="Track 1" aria-pressed="false">
-          <span>Track 1</span>
-          <span class="track-state" aria-hidden="true">▶</span>
-        </button>
-      </li>
-      <li>
-        <button type="button" data-src="怎样.mp3" data-title="Track 2" aria-pressed="false">
-          <span>Track 2</span>
-          <span class="track-state" aria-hidden="true">▶</span>
-        </button>
-      </li>
-      <li>
-        <button type="button" data-src="难过233秒.mp3" data-title="Track 3" aria-pressed="false">
-          <span>Track 3</span>
-          <span class="track-state" aria-hidden="true">▶</span>
-        </button>
-      </li>
-    </ul>
+    <section class="content">
+      <p class="section-title">Songs</p>
 
-    <audio controls preload="metadata"></audio>
-    <p class="now-playing" aria-live="polite">点击一首歌开始播放</p>
+      <ul class="tracks" aria-label="歌曲列表">
+        <li>
+          <button type="button" data-src="trust me.mp3" data-title="trust me" aria-pressed="false">
+            <span class="track-number">01</span>
+            <span class="track-title">trust me</span>
+            <span class="track-state" aria-hidden="true">▶</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-src="怎样.mp3" data-title="怎样" aria-pressed="false">
+            <span class="track-number">02</span>
+            <span class="track-title">怎样</span>
+            <span class="track-state" aria-hidden="true">▶</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" data-src="难过233秒.mp3" data-title="难过233秒" aria-pressed="false">
+            <span class="track-number">03</span>
+            <span class="track-title">难过233秒</span>
+            <span class="track-state" aria-hidden="true">▶</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="player">
+        <audio controls preload="metadata"></audio>
+        <p class="now-playing" aria-live="polite">点击一首歌开始播放</p>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -193,7 +291,7 @@
           setActiveTrack(button);
           statusText.textContent = `正在播放：${button.dataset.title}`;
         } catch (error) {
-          statusText.textContent = "浏览器阻止了自动播放，请再点一次播放按钮";
+          statusText.textContent = "浏览器阻止了播放，请再点一次播放按钮";
         }
       });
     });
