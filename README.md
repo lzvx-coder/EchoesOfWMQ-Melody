@@ -24,10 +24,17 @@
 16. `阴天.mp3`
 17. `飞鸟和蝉.mp3`
 18. `惧高症.mp3`
-19. `你的名字.mp3`
+19. `我的名字.mp3`
 20. `唯一.mp3`
 21. `夜奔.mp3`
 22. `青花瓷.mp3`
+23. `她的花.mp3`
+24. `‌pinKing.mp3`
+25. `后会友期.mp3`
+26. `在恒星里逃离.mp3`
+27. `夜蝶.mp3`
+28. `胆小鬼.mp3`
+29. `草地漫步.mp3`
 
 ## 更新歌曲的代码操作
 
@@ -39,7 +46,7 @@
 
 ### 2. 修改 `index.html`
 
-在 `<ul class="tracks">` 和 `</ul>` 之间，为每首新歌增加一个 `<li>`。例如添加第 23 首《示例歌曲》：
+在 `<ul class="tracks">` 和 `</ul>` 之间，为每首新歌增加一个 `<li>`。例如添加第 30 首《示例歌曲》：
 
 ```html
 <li>
@@ -48,7 +55,7 @@
           data-title="示例歌曲"
           data-note=""
           aria-pressed="false">
-    <span class="track-number">23</span>
+    <span class="track-number">30</span>
     <span class="track-title">示例歌曲</span>
     <span class="track-state" aria-hidden="true">▶</span>
   </button>
