@@ -16,6 +16,10 @@
       --panel-strong: rgba(255, 247, 243, 0.12);
       --accent: #ff9cae;
       --accent-2: #f4c7a1;
+      --accent-soft: rgba(255, 156, 174, 0.13);
+      --accent-medium: rgba(255, 156, 174, 0.28);
+      --accent-border: rgba(255, 156, 174, 0.62);
+      --accent-glow: rgba(255, 156, 174, 0.2);
       --shadow: 0 36px 110px rgba(0, 0, 0, 0.48);
     }
 
@@ -29,6 +33,10 @@
       --panel-strong: rgba(246, 251, 255, 0.12);
       --accent: #7dd3fc;
       --accent-2: #d8b4fe;
+      --accent-soft: rgba(125, 211, 252, 0.13);
+      --accent-medium: rgba(125, 211, 252, 0.28);
+      --accent-border: rgba(125, 211, 252, 0.62);
+      --accent-glow: rgba(125, 211, 252, 0.2);
       background:
         linear-gradient(135deg, rgba(125, 211, 252, 0.2), transparent 34%),
         linear-gradient(315deg, rgba(216, 180, 254, 0.16), transparent 36%),
@@ -46,6 +54,10 @@
       --panel-strong: rgba(251, 255, 249, 0.12);
       --accent: #86efac;
       --accent-2: #fde68a;
+      --accent-soft: rgba(134, 239, 172, 0.13);
+      --accent-medium: rgba(134, 239, 172, 0.28);
+      --accent-border: rgba(134, 239, 172, 0.62);
+      --accent-glow: rgba(134, 239, 172, 0.2);
       background:
         linear-gradient(135deg, rgba(134, 239, 172, 0.18), transparent 34%),
         linear-gradient(315deg, rgba(253, 230, 138, 0.16), transparent 36%),
@@ -216,8 +228,8 @@
       display: inline-grid;
       place-items: center;
       color: var(--accent);
-      background: rgba(255, 156, 174, 0.12);
-      box-shadow: 0 0 28px rgba(255, 156, 174, 0.2);
+      background: var(--accent-soft);
+      box-shadow: 0 0 28px var(--accent-glow);
       font-size: 14px;
       letter-spacing: 0;
     }
@@ -249,7 +261,7 @@
       list-style: none;
       overflow-y: auto;
       overscroll-behavior: contain;
-      scrollbar-color: rgba(255, 156, 174, 0.62) rgba(255, 247, 243, 0.08);
+      scrollbar-color: var(--accent-border) rgba(255, 247, 243, 0.08);
       scrollbar-width: thin;
     }
 
@@ -289,17 +301,16 @@
     .tracks button:hover,
     .tracks button:focus-visible {
       transform: translateY(-2px);
-      border-color: rgba(255, 156, 174, 0.62);
+      border-color: var(--accent-border);
       background:
-        linear-gradient(135deg, rgba(255, 156, 174, 0.13), rgba(255, 247, 243, 0.07));
-      box-shadow: 0 18px 44px rgba(255, 156, 174, 0.12);
-      outline: none;
+        linear-gradient(135deg, var(--accent-soft), rgba(255, 247, 243, 0.07));
+      box-shadow: 0 18px 44px var(--accent-glow);
     }
 
-    .tracks button[aria-pressed="true"] {
-      border-color: rgba(255, 156, 174, 0.76);
+    .tracks button[aria-current="true"] {
+      border-color: var(--accent-border);
       background:
-        linear-gradient(135deg, rgba(255, 156, 174, 0.18), rgba(244, 199, 161, 0.09));
+        linear-gradient(135deg, var(--accent-soft), rgba(255, 247, 243, 0.07));
     }
 
     .track-number {
@@ -332,11 +343,11 @@
       justify-self: end;
     }
 
-    .tracks button[aria-pressed="true"] .track-state {
+    .tracks button[aria-current="true"] .track-state {
       border-color: transparent;
       color: #2a1016;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 0 22px rgba(255, 156, 174, 0.28);
+      box-shadow: 0 0 22px var(--accent-medium);
     }
 
     .album-actions {
@@ -370,9 +381,8 @@
     .comment-form button:hover,
     .comment-form button:focus-visible {
       transform: translateY(-1px);
-      border-color: rgba(255, 156, 174, 0.58);
+      border-color: var(--accent-border);
       background: var(--panel-strong);
-      outline: none;
     }
 
     .action-button[aria-pressed="true"] {
@@ -458,7 +468,7 @@
     }
 
     .comment-input:focus {
-      border-color: rgba(255, 156, 174, 0.62);
+      border-color: var(--accent-border);
       background: rgba(255, 247, 243, 0.08);
     }
 
@@ -479,6 +489,48 @@
       font-size: 14px;
       line-height: 1.55;
       overflow-wrap: anywhere;
+    }
+
+    .comment-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 10px;
+    }
+
+    .comment-delete,
+    .clear-comments {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 5px 9px;
+      color: var(--muted);
+      background: var(--panel);
+      cursor: pointer;
+    }
+
+    .clear-comments {
+      justify-self: end;
+    }
+
+    .clear-comments[hidden] {
+      display: none;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    :where(button, select, input, [role="button"]):focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
     }
 
     .cover-wrap.is-spinning .cover {
@@ -644,6 +696,41 @@
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 10px;
+      }
+
+      main {
+        padding: 12px;
+      }
+
+      .album {
+        gap: 18px;
+      }
+
+      .tracks button {
+        grid-template-columns: 30px minmax(0, 1fr) 36px;
+        gap: 10px;
+        padding-inline: 12px;
+      }
+
+      .track-title {
+        font-size: 17px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -665,37 +752,7 @@
       <h1>万梦琪的个人专辑</h1>
       <p class="summary">听见她的声音</p>
 
-      <ul class="tracks" aria-label="歌曲列表">
-        <li><button type="button" data-src="trust me.mp3" data-title="trust me" data-note="试试看我的爱" aria-pressed="false"><span class="track-number">01</span><span class="track-title">trust me</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="怎样.mp3" data-title="怎样" data-note="我这里天黑了，我想你了" aria-pressed="false"><span class="track-number">02</span><span class="track-title">怎样</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="难过233秒.mp3" data-title="难过233秒" data-note="最后一秒不要难过，要开心哦" aria-pressed="false"><span class="track-number">03</span><span class="track-title">难过233秒</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="恋爱困难少女.mp3" data-title="恋爱困难少女" data-note="社恐才是恋爱困难少女" aria-pressed="false"><span class="track-number">04</span><span class="track-title">恋爱困难少女</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="世界正中.mp3" data-title="世界正中" data-note="世界很大，但这一刻的正中间是你" aria-pressed="false"><span class="track-number">05</span><span class="track-title">世界正中</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="这世界也是我的家.mp3" data-title="这世界也是我的家" data-note="你听不见我说话" aria-pressed="false"><span class="track-number">06</span><span class="track-title">这世界也是我的家</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="巴拉莱卡.mp3" data-title="巴拉莱卡" data-note="我用尽了一生赞美，他教导有方" aria-pressed="false"><span class="track-number">07</span><span class="track-title">巴拉莱卡</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="完美先生和差不多小姐.mp3" data-title="完美先生和差不多小姐" data-note="我奔向你，记得牵我的手" aria-pressed="false"><span class="track-number">08</span><span class="track-title">完美先生和差不多小姐</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="偶尔.mp3" data-title="偶尔" data-note="我来到，记忆里的长廊" aria-pressed="false"><span class="track-number">09</span><span class="track-title">偶尔</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="失落沙洲.mp3" data-title="失落沙洲" data-note="只是越看见海阔天空，越遗憾没有你分享我的感动" aria-pressed="false"><span class="track-number">10</span><span class="track-title">失落沙洲</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="春夜坠落.mp3" data-title="春夜坠落" data-note="在遇见你之前我从没感觉如此心动" aria-pressed="false"><span class="track-number">11</span><span class="track-title">春夜坠落</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="病变.mp3" data-title="病变" data-note="可能猫也爱过你" aria-pressed="false"><span class="track-number">12</span><span class="track-title">病变</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="第57次取消发送.mp3" data-title="第57次取消发送" data-note="我好想你" aria-pressed="false"><span class="track-number">13</span><span class="track-title">第57次取消发送</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="花园.mp3" data-title="花园" data-note="原来爱只适合做花园" aria-pressed="false"><span class="track-number">14</span><span class="track-title">花园</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="过江寒.mp3" data-title="过江寒" data-note="岸上还有岸" aria-pressed="false"><span class="track-number">15</span><span class="track-title">过江寒</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="阴天.mp3" data-title="阴天" data-note="回想那一天，喧闹的喜宴" aria-pressed="false"><span class="track-number">16</span><span class="track-title">阴天</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="飞鸟和蝉.mp3" data-title="飞鸟和蝉" data-note="相遇一定有意义" aria-pressed="false"><span class="track-number">17</span><span class="track-title">飞鸟和蝉</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="惧高症.mp3" data-title="惧高症" data-note="我惧高，我爱你" aria-pressed="false"><span class="track-number">18</span><span class="track-title">惧高症</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="我的名字.mp3" data-title="我的名字" data-note="拜托你轻声重着我的名字" aria-pressed="false"><span class="track-number">19</span><span class="track-title">我的名字</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="唯一.mp3" data-title="唯一" data-note="选择喜欢你的人" aria-pressed="false"><span class="track-number">20</span><span class="track-title">唯一</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="夜奔.mp3" data-title="夜奔" data-note="那雪越下的猛" aria-pressed="false"><span class="track-number">21</span><span class="track-title">夜奔</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="青花瓷.mp3" data-title="青花瓷" data-note="天青色等烟雨" aria-pressed="false"><span class="track-number">22</span><span class="track-title">青花瓷</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="她的花.mp3" data-title="她的花" data-note="她的花依然在开" aria-pressed="false"><span class="track-number">23</span><span class="track-title">她的花</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="pinKing.mp3" data-title="pinKing" data-note="粉色是藏不住的热烈" aria-pressed="false"><span class="track-number">24</span><span class="track-title">pinKing</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="后会友期.mp3" data-title="后会友期" data-note="告别不是终点" aria-pressed="false"><span class="track-number">25</span><span class="track-title">后会友期</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="在恒星里逃离.mp3" data-title="在恒星里逃离" data-note="推理物理星系，让我走进你心里" aria-pressed="false"><span class="track-number">26</span><span class="track-title">在恒星里逃离</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="夜蝶.mp3" data-title="夜蝶" data-note="这首歌在我心里只能排第二" aria-pressed="false"><span class="track-number">27</span><span class="track-title">夜蝶</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="胆小鬼.mp3" data-title="胆小鬼" data-note="你在你的世界无所谓，我在我的世界不敢犯规" aria-pressed="false"><span class="track-number">28</span><span class="track-title">胆小鬼</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-        <li><button type="button" data-src="草地漫步.mp3" data-title="草地漫步" data-note="只想慢慢靠近，就像傍晚踩过草地" aria-pressed="false"><span class="track-number">29</span><span class="track-title">草地漫步</span><span class="track-state" aria-hidden="true">▶</span></button></li>
-      </ul>
+      <ul class="tracks" aria-label="歌曲列表"></ul>
 
       <div class="album-actions" aria-label="专辑操作">
         <button class="action-button" type="button" id="likeButton" aria-pressed="false">
@@ -722,15 +779,53 @@
       <section class="comments" aria-label="本地留言墙">
         <h2>留言墙</h2>
         <form class="comment-form">
-          <input class="comment-input" type="text" maxlength="80" placeholder="说点什么吧">
+          <label class="sr-only" for="commentInput">留言内容</label>
+          <input class="comment-input" id="commentInput" name="comment" type="text" maxlength="80" autocomplete="off" placeholder="说点什么吧">
           <button type="submit">就这样</button>
         </form>
+        <button class="clear-comments" type="button" hidden>清空留言</button>
         <ul class="comment-list" aria-live="polite"></ul>
       </section>
     </section>
   </main>
 
   <script>
+    // 曲目只在这里维护；序号和按钮结构由页面自动生成。
+    const tracks = [
+      ["trust me.mp3", "trust me", "试试看我的爱"], ["怎样.mp3", "怎样", "我这里天黑了，我想你了"],
+      ["难过233秒.mp3", "难过233秒", "最后一秒不要难过，要开心哦"], ["恋爱困难少女.mp3", "恋爱困难少女", "社恐才是恋爱困难少女"],
+      ["世界正中.mp3", "世界正中", "世界很大，但这一刻的正中间是你"], ["这世界也是我的家.mp3", "这世界也是我的家", "你听不见我说话"],
+      ["巴拉莱卡.mp3", "巴拉莱卡", "我用尽了一生赞美，他教导有方"], ["完美先生和差不多小姐.mp3", "完美先生和差不多小姐", "我奔向你，记得牵我的手"],
+      ["偶尔.mp3", "偶尔", "我来到，记忆里的长廊"], ["失落沙洲.mp3", "失落沙洲", "只是越看见海阔天空，越遗憾没有你分享我的感动"],
+      ["春夜坠落.mp3", "春夜坠落", "在遇见你之前我从没感觉如此心动"], ["病变.mp3", "病变", "可能猫也爱过你"],
+      ["第57次取消发送.mp3", "第57次取消发送", "我好想你"], ["花园.mp3", "花园", "原来爱只适合做花园"],
+      ["过江寒.mp3", "过江寒", "岸上还有岸"], ["阴天.mp3", "阴天", "回想那一天，喧闹的喜宴"],
+      ["飞鸟和蝉.mp3", "飞鸟和蝉", "相遇一定有意义"], ["惧高症.mp3", "惧高症", "我惧高，我爱你"],
+      ["我的名字.mp3", "我的名字", "拜托你轻声重着我的名字"], ["唯一.mp3", "唯一", "选择喜欢你的人"],
+      ["夜奔.mp3", "夜奔", "那雪越下的猛"], ["青花瓷.mp3", "青花瓷", "天青色等烟雨"],
+      ["她的花.mp3", "她的花", "她的花依然在开"], ["pinKing.mp3", "pinKing", "粉色是藏不住的热烈"],
+      ["后会友期.mp3", "后会友期", "告别不是终点"], ["在恒星里逃离.mp3", "在恒星里逃离", "推理物理星系，让我走进你心里"],
+      ["夜蝶.mp3", "夜蝶", "这首歌在我心里只能排第二"], ["胆小鬼.mp3", "胆小鬼", "你在你的世界无所谓，我在我的世界不敢犯规"],
+      ["草地漫步.mp3", "草地漫步", "只想慢慢靠近，就像傍晚踩过草地"]
+    ];
+
+    const trackList = document.querySelector(".tracks");
+    const trackFragment = document.createDocumentFragment();
+    tracks.forEach(([src, title, note], index) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.src = src;
+      button.dataset.title = title;
+      button.dataset.note = note;
+      button.setAttribute("aria-current", "false");
+      button.innerHTML = `<span class="track-number">${String(index + 1).padStart(2, "0")}</span><span class="track-title"></span><span class="track-state" aria-hidden="true">▶</span>`;
+      button.querySelector(".track-title").textContent = title;
+      item.append(button);
+      trackFragment.append(item);
+    });
+    trackList.append(trackFragment);
+
     const audio = document.querySelector("audio");
     const statusText = document.querySelector(".now-playing");
     const coverWrap = document.querySelector(".cover-wrap");
@@ -744,9 +839,13 @@
     function setActiveTrack(activeButton) {
       trackButtons.forEach((button) => {
         const isActive = button === activeButton;
-        button.setAttribute("aria-pressed", String(isActive));
+        button.setAttribute("aria-current", String(isActive));
         button.querySelector(".track-state").textContent = isActive ? "❚❚" : "▶";
       });
+      if (activeButton) {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        activeButton.scrollIntoView({ block: "nearest", behavior: reducedMotion ? "auto" : "smooth" });
+      }
     }
 
     trackButtons.forEach((button) => {
@@ -777,7 +876,7 @@
     });
 
     audio.addEventListener("ended", () => {
-      const currentIndex = trackButtons.findIndex((button) => button.getAttribute("aria-pressed") === "true");
+      const currentIndex = getActiveTrackIndex();
       const nextButton = trackButtons[currentIndex + 1];
 
       if (nextButton) {
@@ -863,6 +962,7 @@
     const commentForm = document.querySelector(".comment-form");
     const commentInput = document.querySelector(".comment-input");
     const commentList = document.querySelector(".comment-list");
+    const clearCommentsButton = document.querySelector(".clear-comments");
     const storageKeys = {
       liked: "wmq-album-liked",
       theme: "wmq-album-theme",
@@ -870,7 +970,7 @@
     };
 
     function getActiveTrackIndex() {
-      return trackButtons.findIndex((button) => button.getAttribute("aria-pressed") === "true");
+      return trackButtons.findIndex((button) => button.getAttribute("aria-current") === "true");
     }
 
     function updateTrackNote(button) {
@@ -896,7 +996,7 @@
     }
 
     function startCoverSpin() {
-      if (vinylAnimation) {
+      if (vinylAnimation || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
       }
 
@@ -1007,12 +1107,23 @@
         const emptyItem = document.createElement("li");
         emptyItem.textContent = "这里还没有留言哦";
         commentList.append(emptyItem);
+        clearCommentsButton.hidden = true;
         return;
       }
 
-      comments.forEach((comment) => {
+      clearCommentsButton.hidden = false;
+      comments.forEach((comment, index) => {
         const item = document.createElement("li");
-        item.textContent = comment;
+        item.className = "comment-item";
+        const text = document.createElement("span");
+        text.textContent = comment;
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "comment-delete";
+        deleteButton.type = "button";
+        deleteButton.dataset.commentIndex = String(index);
+        deleteButton.setAttribute("aria-label", `删除留言：${comment}`);
+        deleteButton.textContent = "删除";
+        item.append(text, deleteButton);
         commentList.append(item);
       });
     }
@@ -1033,6 +1144,13 @@
       updatePausedTrackIcon();
     });
     audio.addEventListener("ended", updateCoverSpin);
+    audio.addEventListener("error", () => {
+      const activeIndex = getActiveTrackIndex();
+      const title = activeIndex >= 0 ? trackButtons[activeIndex].dataset.title : "当前歌曲";
+      setActiveTrack(null);
+      updateCoverSpin();
+      statusText.textContent = `无法加载《${title}》，请检查音频文件是否存在。`;
+    });
 
     likeButton.addEventListener("click", () => {
       const nextLiked = likeButton.getAttribute("aria-pressed") !== "true";
@@ -1070,6 +1188,23 @@
       saveComments(comments.slice(0, 12));
       commentInput.value = "";
       renderComments();
+    });
+
+    commentList.addEventListener("click", (event) => {
+      const deleteButton = event.target.closest(".comment-delete");
+      if (!deleteButton) return;
+      const comments = readComments();
+      comments.splice(Number(deleteButton.dataset.commentIndex), 1);
+      saveComments(comments);
+      renderComments();
+      statusText.textContent = "留言已删除。";
+    });
+
+    clearCommentsButton.addEventListener("click", () => {
+      if (!window.confirm("确定清空全部本地留言吗？")) return;
+      saveComments([]);
+      renderComments();
+      statusText.textContent = "留言已清空。";
     });
 
     setLiked(localStorage.getItem(storageKeys.liked) === "true");
