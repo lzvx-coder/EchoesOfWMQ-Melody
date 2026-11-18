@@ -198,18 +198,23 @@
       position: absolute;
       inset: -14px;
       z-index: -1;
-      border-radius: 14px;
+      border-radius: 12px;
       opacity: 0.42;
       background: conic-gradient(from 0deg, var(--accent), transparent 24%, var(--accent-2), transparent 72%, var(--accent));
       filter: blur(7px);
-      transition: opacity 360ms ease, filter 360ms ease;
+      transition: opacity 360ms ease, filter 360ms ease, border-radius 380ms ease;
       pointer-events: none;
     }
 
     .cover-wrap.is-spinning .cover-halo {
+      border-radius: 50%;
       opacity: 1;
       filter: blur(4px) saturate(1.4);
       animation: halo-spin 3.8s linear infinite, halo-pulse 1.8s ease-in-out infinite;
+    }
+
+    .cover-wrap.is-returning .cover-halo {
+      border-radius: 50%;
     }
 
     @keyframes halo-spin {
