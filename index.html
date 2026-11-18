@@ -196,24 +196,28 @@
 
     .cover-halo {
       position: absolute;
-      inset: -8px;
+      inset: -14px;
       z-index: -1;
       border-radius: 14px;
-      opacity: 0.22;
+      opacity: 0.42;
       background: conic-gradient(from 0deg, var(--accent), transparent 24%, var(--accent-2), transparent 72%, var(--accent));
-      filter: blur(10px);
+      filter: blur(7px);
       transition: opacity 360ms ease, filter 360ms ease;
       pointer-events: none;
     }
 
     .cover-wrap.is-spinning .cover-halo {
-      opacity: 0.9;
-      filter: blur(7px);
-      animation: halo-spin 5.6s linear infinite;
+      opacity: 1;
+      filter: blur(4px) saturate(1.4);
+      animation: halo-spin 3.8s linear infinite, halo-pulse 1.8s ease-in-out infinite;
     }
 
     @keyframes halo-spin {
       to { transform: rotate(360deg); }
+    }
+
+    @keyframes halo-pulse {
+      50% { filter: blur(8px) saturate(1.65); }
     }
 
     .cover {
@@ -420,6 +424,11 @@
       gap: 10px;
     }
 
+    .theme-picker {
+      position: relative;
+      min-width: 0;
+    }
+
     .action-button,
     .theme-select,
     .comment-form button {
@@ -457,14 +466,49 @@
 
     .theme-select {
       width: 100%;
-      appearance: none;
       text-align: center;
-      color-scheme: dark;
     }
 
-    .theme-select option {
+    .theme-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 50;
+      width: 100%;
+      min-width: 150px;
+      display: grid;
+      gap: 4px;
+      margin: 0;
+      padding: 6px;
+      border: 1px solid var(--accent-border);
+      border-radius: 10px;
+      list-style: none;
+      background: color-mix(in srgb, var(--page) 94%, black);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.52);
+      backdrop-filter: blur(18px);
+    }
+
+    .theme-menu[hidden] {
+      display: none;
+    }
+
+    .theme-option {
+      min-height: 42px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 0 12px;
       color: var(--ink);
-      background: var(--page);
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .theme-option:hover,
+    .theme-option:focus-visible,
+    .theme-option[aria-checked="true"] {
+      border-color: var(--accent-border);
+      color: var(--ink);
+      background: var(--accent-soft);
     }
 
     .player {
@@ -480,10 +524,12 @@
 
     .spectrum {
       width: 100%;
-      height: 58px;
+      height: 76px;
       display: block;
       border-radius: 8px;
-      background: linear-gradient(180deg, transparent, var(--accent-soft));
+      border: 1px solid var(--accent-border);
+      box-shadow: inset 0 -18px 32px var(--accent-soft), 0 0 22px var(--accent-glow);
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), var(--accent-soft));
     }
 
     .player-copy.is-changing {
@@ -887,11 +933,14 @@
           <span aria-hidden="true">↝</span>
           <span>随机播放</span>
         </button>
-        <select class="theme-select" id="themeSelect" aria-label="主题切换">
-          <option value="rose">绯红</option>
-          <option value="moon">静谧夜</option>
-          <option value="forest">苍翠</option>
-        </select>
+        <div class="theme-picker">
+          <button class="theme-select" type="button" id="themeButton" aria-haspopup="menu" aria-expanded="false">绯红</button>
+          <div class="theme-menu" id="themeMenu" role="menu" hidden>
+            <button class="theme-option" type="button" role="menuitemradio" aria-checked="true" data-theme-value="rose">绯红</button>
+            <button class="theme-option" type="button" role="menuitemradio" aria-checked="false" data-theme-value="moon">静谧夜</button>
+            <button class="theme-option" type="button" role="menuitemradio" aria-checked="false" data-theme-value="forest">苍翠</button>
+          </div>
+        </div>
       </div>
       
       <div class="player">
@@ -1121,7 +1170,9 @@
     const likeButton = document.querySelector("#likeButton");
     const likeText = document.querySelector("#likeText");
     const shuffleButton = document.querySelector("#shuffleButton");
-    const themeSelect = document.querySelector("#themeSelect");
+    const themeButton = document.querySelector("#themeButton");
+    const themeMenu = document.querySelector("#themeMenu");
+    const themeOptions = Array.from(document.querySelectorAll("[data-theme-value]"));
     const commentForm = document.querySelector(".comment-form");
     const commentInput = document.querySelector(".comment-input");
     const commentList = document.querySelector(".comment-list");
@@ -1134,10 +1185,10 @@
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let visualAccent = "#ff9cae";
     let visualAccent2 = "#f4c7a1";
-    const stars = Array.from({ length: 42 }, () => ({
+    const stars = Array.from({ length: 68 }, () => ({
       x: Math.random(),
       y: Math.random(),
-      radius: 0.6 + Math.random() * 1.8,
+      radius: 0.9 + Math.random() * 2.4,
       speed: 0.00004 + Math.random() * 0.0001,
       phase: Math.random() * Math.PI * 2
     }));
@@ -1188,7 +1239,7 @@
       const moving = !audio.paused && !reducedMotionQuery.matches;
       stars.forEach((star) => {
         if (moving) star.y = (star.y - star.speed * 16 + 1) % 1;
-        const pulse = 0.25 + (Math.sin(time * 0.0015 + star.phase) + 1) * 0.2;
+        const pulse = 0.34 + (Math.sin(time * 0.0015 + star.phase) + 1) * 0.26;
         ambientContext.globalAlpha = pulse;
         ambientContext.fillStyle = visualAccent;
         ambientContext.beginPath();
@@ -1339,7 +1390,9 @@
 
     function setTheme(theme) {
       document.body.dataset.theme = theme;
-      themeSelect.value = theme;
+      const activeOption = themeOptions.find((option) => option.dataset.themeValue === theme) || themeOptions[0];
+      themeButton.textContent = activeOption.textContent;
+      themeOptions.forEach((option) => option.setAttribute("aria-checked", String(option === activeOption)));
       localStorage.setItem(storageKeys.theme, theme);
       const styles = getComputedStyle(document.body);
       visualAccent = styles.getPropertyValue("--accent").trim();
@@ -1437,8 +1490,33 @@
       trackButtons[nextIndex].click();
     });
 
-    themeSelect.addEventListener("change", () => {
-      setTheme(themeSelect.value);
+    themeButton.addEventListener("click", () => {
+      const willOpen = themeMenu.hidden;
+      themeMenu.hidden = !willOpen;
+      themeButton.setAttribute("aria-expanded", String(willOpen));
+      if (willOpen) themeOptions.find((option) => option.getAttribute("aria-checked") === "true")?.focus();
+    });
+
+    themeMenu.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-theme-value]");
+      if (!option) return;
+      setTheme(option.dataset.themeValue);
+      themeMenu.hidden = true;
+      themeButton.setAttribute("aria-expanded", "false");
+      themeButton.focus();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest(".theme-picker")) return;
+      themeMenu.hidden = true;
+      themeButton.setAttribute("aria-expanded", "false");
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || themeMenu.hidden) return;
+      themeMenu.hidden = true;
+      themeButton.setAttribute("aria-expanded", "false");
+      themeButton.focus();
     });
 
     commentForm.addEventListener("submit", (event) => {
